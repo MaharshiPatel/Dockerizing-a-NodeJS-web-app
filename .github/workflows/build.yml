@@ -5,7 +5,7 @@ jobs:
    runs-on: ubuntu-latest
    env:
      JF_URL: ${{ secrets.ARTIFACTORY_URL }}
-     JF_IDENTITY_TOKEN: ${{ secrets.JF_ARTIFACTORY_SECRET }}
+     JF_IDENTITY_TOKEN: ${{ secrets.JF_PASSWORD }}
      JF_USER: ${{secrets.JF_USER}}
      BUILD_NAME: 'NodeDockerApp'
      JFROG_BUILD_STATUS: PASS
