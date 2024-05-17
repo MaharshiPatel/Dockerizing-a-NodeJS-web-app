@@ -23,8 +23,8 @@ jobs:
          # Configure the project
          jf npmc --repo-resolve alpha-npm-virtual
          # Build the project using JFrog CLI
-         jf rt npmi --build-name ${{env.BUILD_NAME}} --build-number ${{github.run_number}}
-         jf rt npmp --build-name ${{env.BUILD_NAME}} --build-number ${{github.run_number}}
+         jf npmi --build-name ${{env.BUILD_NAME}} --build-number ${{github.run_number}}
+         jf npmp --build-name ${{env.BUILD_NAME}} --build-number ${{github.run_number}}
      - name: Failure check
        run: |
          echo "JFROG_BUILD_STATUS=FAIL" >> $GITHUB_ENV
