@@ -40,7 +40,7 @@ jobs:
          # Scan the published build-info with Xray
          # jf rt bs
        if: always()
-     - name: Publish build NPM build-info
+     - name: Docker build
        run: |
         docker login --url=${{env.JF_URL}} --user${{env.JF_USER}} --password=${{env.JF_PASSWORD}}
         docker build -t node-web-app .
