@@ -15,7 +15,7 @@ jobs:
      - uses: jfrog/setup-jfrog-cli@v3 
      # This command adds a new server configuration to the JFrog CLI   
      - run: | 
-        jf c add gaction --url=${{env.JF_URL}}/artifactory --user${{env.JF_USER}} --password=${{env.JF_PASSWORD}} --interactive=false
+        jf c add gaction --url=${{env.JF_URL}} --user${{env.JF_USER}} --password=${{env.JF_PASSWORD}} --interactive=false
      - name: Build and publish
        run: |
          # Configure the project
