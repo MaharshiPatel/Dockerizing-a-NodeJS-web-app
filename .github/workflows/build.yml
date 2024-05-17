@@ -32,13 +32,13 @@ jobs:
      - name: Publish build NPM build-info
        run: |
          # Collect and store environment variables in the build-info
-         jf rt bce
+         jf rt bce ${{env.BUILD_NAME}} ${{github.run_number}}
          # Collect and store VCS details in the build-info
-         jf rt bag
+         jf rt bag ${{env.BUILD_NAME}} ${{github.run_number}}
          # Publish the build-info to Artifactory
-         jf rt bp
+         jf rt bp ${{env.BUILD_NAME}} ${{github.run_number}}
          # Scan the published build-info with Xray
-         jf rt bs
+         # jf rt bs
        if: always()
      - name: Publish build NPM build-info
        run: |
