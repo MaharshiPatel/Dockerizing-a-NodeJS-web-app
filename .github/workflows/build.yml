@@ -1,0 +1,48 @@
+name: 'NodeDockerApp'
+on: [push]
+jobs:
+ jfrog-ci-integration:
+   runs-on: ubuntu-latest
+   env:
+     JF_URL: ${{ secrets.ARTIFACTORY_URL }}
+     JF_IDENTITY_TOKEN: ${{ secrets.JF_ARTIFACTORY_SECRET }}
+     JF_USER: ${{secrets.JF_USER}}
+     BUILD_NAME: 'NodeDockerApp'
+     JFROG_BUILD_STATUS: PASS
+   steps:
+     - name: Checkout
+       uses: actions/checkout@v2
+     - uses: jfrog/setup-jfrog-cli@v3 
+     # This command adds a new server configuration to the JFrog CLI   
+     - run: |
+        export SERVER_ID="gaction"
+        jf c add $SERVER_ID --url=${{env.JF_URL}}/artifactory --user${{env.JF_USER}} --password=${{env.JF_IDENTITY_TOKEN}} --interactive=false
+     - name: Build and publish
+       run: |
+         # Configure the project
+         jf rt npm-config --server-id-resolve jfrog-instance --repo-resolve alpha-npm-virtual
+         # Build the project using JFrog CLI
+         jf rt npmi --build-name ${{env.BUILD_NAME}} --build-number ${{github.run_number}}
+         jf rt npmp --build-name ${{env.BUILD_NAME}} --build-number ${{github.run_number}}
+     - name: Failure check
+       run: |
+         echo "JFROG_BUILD_STATUS=FAIL" >> $GITHUB_ENV
+       if: failure()
+     - name: Publish build NPM build-info
+       run: |
+         # Collect and store environment variables in the build-info
+         jf rt bce
+         # Collect and store VCS details in the build-info
+         jf rt bag
+         # Publish the build-info to Artifactory
+         jf rt bp
+         # Scan the published build-info with Xray
+         jf rt bs
+       if: always()
+     - name: Publish build NPM build-info
+       run: |
+        docker login --url=${{env.JF_URL}} --user${{env.JF_USER}} --password=${{env.JF_IDENTITY_TOKEN}}
+        docker build -t node-web-app .
+        docker images
+        docker tag node-web-app soleng.jfrog.io/alpha-docker-virtual/node-web-app:${{github.run_number}}
+        docker push soleng.jfrog.io/alpha-docker-virtual/node-web-app:${{github.run_number}}
