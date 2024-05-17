@@ -14,9 +14,8 @@ jobs:
        uses: actions/checkout@v2
      - uses: jfrog/setup-jfrog-cli@v3 
      # This command adds a new server configuration to the JFrog CLI   
-     - run: |
-        export SERVER_ID="gaction"
-        jf c add $SERVER_ID --url=${{env.JF_URL}}/artifactory --user${{env.JF_USER}} --password=${{env.JF_PASSWORD}} --interactive=false
+     - run: | 
+        jf c add gaction --url=${{env.JF_URL}}/artifactory --user${{env.JF_USER}} --password=${{env.JF_PASSWORD}} --interactive=false
      - name: Build and publish
        run: |
          # Configure the project
