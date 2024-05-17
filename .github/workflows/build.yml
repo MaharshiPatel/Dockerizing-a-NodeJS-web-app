@@ -5,7 +5,7 @@ jobs:
    runs-on: ubuntu-latest
    env:
      JF_URL: ${{ secrets.ARTIFACTORY_URL }}
-     JF_IDENTITY_TOKEN: ${{ secrets.JF_PASSWORD }}
+     JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
      JF_USER: ${{secrets.JF_USER}}
      BUILD_NAME: 'NodeDockerApp'
      JFROG_BUILD_STATUS: PASS
@@ -16,7 +16,7 @@ jobs:
      # This command adds a new server configuration to the JFrog CLI   
      - run: |
         export SERVER_ID="gaction"
-        jf c add $SERVER_ID --url=${{env.JF_URL}}/artifactory --user${{env.JF_USER}} --password=${{env.JF_IDENTITY_TOKEN}} --interactive=false
+        jf c add $SERVER_ID --url=${{env.JF_URL}}/artifactory --user${{env.JF_USER}} --password=${{env.JF_PASSWORD}} --interactive=false
      - name: Build and publish
        run: |
          # Configure the project
@@ -41,7 +41,7 @@ jobs:
        if: always()
      - name: Publish build NPM build-info
        run: |
-        docker login --url=${{env.JF_URL}} --user${{env.JF_USER}} --password=${{env.JF_IDENTITY_TOKEN}}
+        docker login --url=${{env.JF_URL}} --user${{env.JF_USER}} --password=${{env.JF_PASSWORD}}
         docker build -t node-web-app .
         docker images
         docker tag node-web-app soleng.jfrog.io/alpha-docker-virtual/node-web-app:${{github.run_number}}
