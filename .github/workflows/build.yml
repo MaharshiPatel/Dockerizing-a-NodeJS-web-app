@@ -21,7 +21,7 @@ jobs:
      - name: Build and publish
        run: |
          # Configure the project
-         jf rt npmc --repo-resolve alpha-npm-virtual
+         jf npmc --repo-resolve alpha-npm-virtual
          # Build the project using JFrog CLI
          jf rt npmi --build-name ${{env.BUILD_NAME}} --build-number ${{github.run_number}}
          jf rt npmp --build-name ${{env.BUILD_NAME}} --build-number ${{github.run_number}}
