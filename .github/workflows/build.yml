@@ -12,7 +12,8 @@ jobs:
    steps:
      - name: Checkout
        uses: actions/checkout@v2
-     - uses: jfrog/setup-jfrog-cli@v3 
+     - uses: jfrog/setup-jfrog-cli@v4
+     - run: jf --version
      # This command adds a new server configuration to the JFrog CLI   
      - run: | 
         jf c add gaction --url=${{env.JF_URL}} --user${{env.JF_USER}} --password=${{env.JF_PASSWORD}} --interactive=false
